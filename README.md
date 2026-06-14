@@ -9,17 +9,21 @@ Aus einem Gedanken, einem Blog-Post oder einer Beobachtung werden plattformgerec
 ```
 social-pipeline/
 ├── README.md
+├── CHANGELOG.md               # Prompt-Änderungslogbuch
 ├── .gitignore                 # output/ ausgeschlossen
 ├── posts/                     # Content-Quellen (Markdown)
 │   └── 2026-06-14-test-erster-social-post.md
 ├── prompts/                   # Prompt-Vorlagen (das geistige Eigentum)
 │   ├── _shared/
-│   │   ├── kunstfigur-kern.md      # System-Prompt: Tobias-Hecht-Identität
-│   │   └── analyse-plattformen.md  # Stufe 1: Plattform-Eignungsanalyse
+│   │   ├── kunstfigur-kern.md      # System-Prompt: Identität + Anti-Patterns
+│   │   ├── stil-beispiele.md       # 3 Few-Shot-Examples mit Analyse
+│   │   └── analyse-plattformen.md  # Stufe 1: Plattform-Eignung (7 Plattformen)
 │   ├── blog.md                # KERN: YAML-Frontmatter, 3 Content-Typen
-│   ├── telegram.md            # Rolle + Wissen + Limits direkt im Prompt
-│   ├── youtube-community.md
-│   └── linkedin.md
+│   ├── telegram.md            # Schale 2: Easteregg-CTA
+│   ├── youtube-community.md   # Schale 3: PS-CTA
+│   ├── linkedin.md            # B2B-Schiene: 5 Content-Typen
+│   └── kampagne.md            # Kampagnen-Fahrplan (4-Wochen-Trichter)
+├── campaigns/                 # Generierte Kampagnen-Dokumente
 └── output/                    # Generierte Texte (pro Tag)
     └── YYYY-MM-DD/
         ├── telegram-slug.txt
@@ -97,6 +101,16 @@ Jeder Prompt in `prompts/` ist autark. Er definiert:
 Die Prompts sind versioniert in Git. Du kannst sie jederzeit verfeinern — das ist das geistige Eigentum des Projekts. Keine `config.json` nötig, keine `{{variablen}}`. Alles Wissen steckt direkt im Prompt.
 
 **Quelle des Plattform-Wissens:** `plattform_use_cases_zwiebelmodell.md` aus dem Werkstatthandbuch. Die Prompts sind die operationalisierte Form dieses Dokuments.
+
+### Kampagnen-System (Stufe 3: Strategie)
+
+Für größere Vorhaben (Show-Reihe, Buch-Launch, Newsletter-Wachstum) gibt es `prompts/kampagne.md`:
+
+```
+"Plane eine Kampagne: Ziel: 1.000 Newsletter-Abonnenten. Zeitraum: 4 Wochen."
+```
+
+Der Prompt generiert einen vollständigen Fahrplan als Markdown-Datei — mit Wochentabelle, konkreten Content-Ideen pro Tag/Plattform, CTA-Dosierung und Trichter-Logik. Das Ergebnis landet in `campaigns/` und dient als dein Produktions-Leitfaden.
 
 ### Aktive Plattformen
 
