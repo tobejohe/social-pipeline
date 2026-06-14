@@ -16,6 +16,7 @@ social-pipeline/
 │   ├── _shared/
 │   │   ├── kunstfigur-kern.md      # System-Prompt: Tobias-Hecht-Identität
 │   │   └── analyse-plattformen.md  # Stufe 1: Plattform-Eignungsanalyse
+│   ├── blog.md                # KERN: YAML-Frontmatter, 3 Content-Typen
 │   ├── telegram.md            # Rolle + Wissen + Limits direkt im Prompt
 │   ├── youtube-community.md
 │   └── linkedin.md
@@ -101,6 +102,7 @@ Die Prompts sind versioniert in Git. Du kannst sie jederzeit verfeinern — das 
 
 | Plattform | Prompt | Strategisches Ziel (Zwiebelmodell) |
 |-----------|--------|-----------------------------------|
+| **Blog** | `prompts/blog.md` | KERN — Langlebiger Content, RSS-Quelle, SEO/LLMEO |
 | **Telegram** | `prompts/telegram.md` | Schale 2 — Kern-Community binden, Newsletter-Trichter |
 | **YouTube Community** | `prompts/youtube-community.md` | Schale 3 — Abonnenten mit Substanz füttern, Richtung Kern lenken |
 | **LinkedIn** | `prompts/linkedin.md` | Parallele B2B-Schiene — Keynote Speaker positionieren |

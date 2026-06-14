@@ -13,6 +13,14 @@
 
 **Plattform-Profile (strategisch, aus dem Werkstatthandbuch kondensiert):**
 
+### Blog (tobiashecht.de)
+- **Schicht im Zwiebelmodell:** KERN — höchste Souveränität (⭐⭐⭐⭐⭐)
+- **Strategisches Ziel:** Langlebiger Content, RSS-Quelle für alle anderen Kanäle. SEO/LLMEO-Entry-Point.
+- **Mechanik:** Statisches Markdown → HTML via Cloudflare Pages. Jeder Beitrag eigene URL. Kein Algorithmus, kein Gatekeeper.
+- **Idealer Content:** Alltagsbeobachtungen (300–500 Wörter), Show-Reiseberichte (400–700 Wörter), Ankündigungen (200–400 Wörter). Unterhaltungs- oder Neuigkeitswert.
+- **Wichtig:** Keine Kabarett-Snippets (Bühne), kein Marketing (Social Media). Blog = Substanz mit Hecht-Stimme.
+- **Frontmatter-Pflicht:** title, date, slug, hero_image, description (Meta-Description)
+
 ### Telegram
 - **Schicht im Zwiebelmodell:** Schale 2 (dezentrale Reichweite, hohe Souveränität)
 - **Strategisches Ziel:** Kern-Community binden, Newsletter/Website-Trichter
@@ -64,6 +72,7 @@ Gib eine Tabelle aus:
 
 | Plattform | Geeignet? | Strategische Begründung |
 |-----------|:---------:|------------------------|
+| Blog | ✅/⚠️/❌ | Ein Satz: Hat der Content Unterhaltungs- oder Neuigkeitswert? Welcher Content-Typ? |
 | Telegram | ✅/⚠️/❌ | Ein Satz: Wie unterstützt der Content das Trichterziel? |
 | YouTube Community | ✅/⚠️/❌ | Ein Satz |
 | LinkedIn | ✅/⚠️/❌ | Ein Satz mit Bezug zu einem der 5 Content-Typen |
@@ -71,7 +80,7 @@ Gib eine Tabelle aus:
 | TikTok | ✅/⚠️/❌ | Ein Satz: Visuelles Potenzial? Benign-Rahmen in 3 Sek. möglich? |
 | Instagram | ✅/⚠️/❌ | Ein Satz: Bild-Idee vorhanden? |
 
-Darunter eine kurze Empfehlung: "Priorität: [Plattform 1], [Plattform 2]. Optional: [Plattform 3]. Abraten von: [Plattformen]."
+Darunter eine kurze Empfehlung: "Priorität: [Plattform 1], [Plattform 2]. Blog nur, wenn der Content langlebigen Wert hat. Optional: [Plattform 3]. Abraten von: [Plattformen]."
 
 **Content:**
 Titel: {{title}}
