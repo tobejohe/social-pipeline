@@ -1,0 +1,16 @@
+{
+  "name": "social-pipeline",
+  "version": "1.0.0",
+  "description": "Content-Maschine für plattformspezifische Social-Media-Ausspielungen — MD + Prompts → Output-Dateien",
+  "main": "generate.js",
+  "scripts": {
+    "generate": "node generate.js",
+    "test": "node tests/run.js"
+  },
+  "keywords": ["social-media", "content-transformation", "prompt-chain"],
+  "author": "Tobias Hecht",
+  "license": "ISC",
+  "dependencies": {
+    "marked": "^18.0.5"
+  }
+}

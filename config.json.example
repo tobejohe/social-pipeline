@@ -1,0 +1,22 @@
+{
+  "active_platforms": ["telegram", "youtube-community"],
+  "ai": {
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "temperature": 0.8,
+    "max_tokens": 2000
+  },
+  "platforms": {
+    "telegram": {
+      "max_chars": 500,
+      "tone": "direkt, plaudernd, Push-fähig",
+      "hashtags": false
+    },
+    "youtube-community": {
+      "max_chars": 1500,
+      "tone": "Community-nah, frage-getrieben, dialogisch",
+      "hashtags": false
+    }
+  }
+}
