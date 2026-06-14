@@ -8,23 +8,25 @@ Aus einem Gedanken, einem Blog-Post oder einer Beobachtung werden plattformgerec
 
 ```
 social-pipeline/
-├── README.md                  # Diese Datei
+├── README.md
 ├── .gitignore                 # output/ ausgeschlossen
-├── config.json                # Plattform-Einstellungen
 ├── posts/                     # Content-Quellen (Markdown)
 │   └── 2026-06-14-test-erster-social-post.md
 ├── prompts/                   # Prompt-Vorlagen (das geistige Eigentum)
 │   ├── _shared/
-│   │   └── kunstfigur-kern.md     # System-Prompt: Tobias-Hecht-Identität
-│   ├── telegram.md            # 500 Zeichen, direkt, Push-tauglich
-│   ├── youtube-community.md   # 1.500 Zeichen, Polls, Community-Fragen
-│   └── linkedin.md            # 3.000 Zeichen, Thought Leadership
+│   │   ├── kunstfigur-kern.md      # System-Prompt: Tobias-Hecht-Identität
+│   │   └── analyse-plattformen.md  # Stufe 1: Plattform-Eignungsanalyse
+│   ├── telegram.md            # Rolle + Wissen + Limits direkt im Prompt
+│   ├── youtube-community.md
+│   └── linkedin.md
 └── output/                    # Generierte Texte (pro Tag)
     └── YYYY-MM-DD/
         ├── telegram-slug.txt
         ├── youtube-community-slug.txt
         └── linkedin-slug.txt
 ```
+
+Es gibt **keine `config.json`**, keine `{{variablen}}`. Jeder Prompt enthält seine Rolle, sein Plattform-Wissen und seine Limits direkt — eingebettet und unveränderlich, bis du den Prompt bewusst editierst.
 
 ---
 
@@ -82,53 +84,37 @@ Wenn du den Content bereits kennst und weißt, welche Plattformen passen:
 
 ---
 
-## Plattform-Matrix
+## Plattform-Prompts
 
-| Plattform | Zeichenlimit | Tonalität | Prompt-Datei |
-|-----------|-------------|-----------|-------------|
-| Telegram | 500 | direkt, plaudernd, Push-fähig | `prompts/telegram.md` |
-| YouTube Community | 1.500 | Community-nah, frage-getrieben | `prompts/youtube-community.md` |
-| LinkedIn | 3.000 | Thought Leadership mit Humor | `prompts/linkedin.md` |
+Jeder Prompt in `prompts/` ist autark. Er definiert:
+
+- **ROLLE:** Wer spricht? Ein Telegram-Stratege? Ein LinkedIn-Positionierer?
+- **PLATTFORM-WISSEN:** Was funktioniert auf dieser Plattform? Was nicht? (Direkt aus dem Werkstatthandbuch)
+- **ZIEL:** Welche Conversion? Trichterrichtung? Strategischer Zweck?
+- **LIMIT:** Zeichenlimit, Format-Regeln, Output-Format
+
+Die Prompts sind versioniert in Git. Du kannst sie jederzeit verfeinern — das ist das geistige Eigentum des Projekts. Keine `config.json` nötig, keine `{{variablen}}`. Alles Wissen steckt direkt im Prompt.
+
+**Quelle des Plattform-Wissens:** `plattform_use_cases_zwiebelmodell.md` aus dem Werkstatthandbuch. Die Prompts sind die operationalisierte Form dieses Dokuments.
+
+### Aktive Plattformen
+
+| Plattform | Prompt | Strategisches Ziel (Zwiebelmodell) |
+|-----------|--------|-----------------------------------|
+| **Telegram** | `prompts/telegram.md` | Schale 2 — Kern-Community binden, Newsletter-Trichter |
+| **YouTube Community** | `prompts/youtube-community.md` | Schale 3 — Abonnenten mit Substanz füttern, Richtung Kern lenken |
+| **LinkedIn** | `prompts/linkedin.md` | Parallele B2B-Schiene — Keynote Speaker positionieren |
 
 ---
 
 ## Kunstfigur-Kern
 
-Der System-Prompt in `prompts/_shared/kunstfigur-kern.md` definiert die Tobias-Hecht-Identität:
+`prompts/_shared/kunstfigur-kern.md` definiert die Tobias-Hecht-Identität:
 
 - **Zwei Haltungen:** Der wütende Aufklärer + der amüsierte Anthropologe
 - **5 rhetorische Grundfiguren:** Scheinbare Naivität, Absurde Logik, Soziolekt-Kontrast, Pointe als sprachliche Figur, Radikaler Perspektivwechsel
 - **3 Archetypen:** Bauer Huber, Opa/Dorfältester, Tante Erna
 - **Stil:** Trocken, direkt, keine Moral, kein Lob
-
----
-
-## Plattform-Prompts anpassen
-
-Die `.md`-Dateien in `prompts/` sind das Herzstück. Sie enthalten die Transformationsanweisungen für jede Plattform. Sie nutzen `{{platzhalter}}` für dynamische Werte:
-
-- `{{title}}` — Titel aus dem Content
-- `{{body}}` — Body-Text
-- `{{hook}}` — Hook-Zeile
-- `{{max_chars}}` — Zeichenlimit aus `config.json`
-- `{{tone}}` — Tonalität aus `config.json`
-
-Prompts können jederzeit verfeinert werden — sie sind versioniert in Git und überleben Plattform-Änderungen.
-
----
-
-## config.json
-
-```json
-{
-  "active_platforms": ["telegram", "youtube-community", "linkedin"],
-  "platforms": {
-    "telegram": { "max_chars": 500, "tone": "direkt, plaudernd, Push-fähig", "hashtags": false },
-    "youtube-community": { "max_chars": 1500, "tone": "Community-nah, frage-getrieben", "hashtags": false },
-    "linkedin": { "max_chars": 3000, "tone": "Thought Leadership mit Humor", "hashtags": true }
-  }
-}
-```
 
 ---
 
@@ -138,4 +124,4 @@ Prompts können jederzeit verfeinert werden — sie sind versioniert in Git und 
 - **Kein Scheduler.** Du entscheidest, wann was live geht.
 - **Kein Analytics-Tool.** Fokus auf Content-Produktion.
 - **Keine eigene LLM-API.** CLINE ist die Engine — kein zweiter API-Key nötig.
-- **Kein JavaScript-Framework.** Das Projekt besteht aus Prompt-Dateien und Content. Punkt.
+- **Kein JavaScript-Framework, keine config.json, keine Variablen.** Das Projekt besteht aus Prompt-Dateien mit eingebettetem Plattform-Wissen und Content-Dateien. Punkt.
