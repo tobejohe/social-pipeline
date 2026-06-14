@@ -10,7 +10,6 @@ const {
   extractExcerpt,
   slugFromFilename,
 } = require("../lib/frontmatter");
-const { render } = require("../lib/template-engine");
 const { resolveFile, resolveText } = require("../lib/content-resolver");
 
 let passed = 0;
@@ -72,17 +71,6 @@ assert("Behält Slug ohne Datum", slugFromFilename("doenerbude.md") === "doenerb
 assert("Mehrere Bindestriche", slugFromFilename("2026-01-01-ein-langer-slug.md") === "ein-langer-slug");
 
 // ============================================================
-// Template-Engine
-// ============================================================
-
-console.log("\n📋 Template-Engine");
-
-const tmpl = "{{title}}: {{body}}. {{unknown}}";
-const result = render(tmpl, { title: "Hallo", body: "Welt" });
-assert("Platzhalter werden ersetzt", result === "Hallo: Welt. {{unknown}}");
-assert("Unbekannte Platzhalter bleiben", result.includes("{{unknown}}"));
-
-// ============================================================
 // Content-Resolver
 // ============================================================
 
@@ -112,26 +100,6 @@ if (fs.existsSync(testPostPath)) {
 }
 
 // ============================================================
-// AI-Client-Konfigurationsprüfung (ohne API-Key)
-// ============================================================
-
-console.log("\n📋 AI-Client-Konfiguration");
-
-const configPath = path.resolve(__dirname, "..", "config.json");
-const configExamplePath = path.resolve(__dirname, "..", "config.json.example");
-
-assert("config.json.example existiert", fs.existsSync(configExamplePath));
-
-if (!fs.existsSync(configPath)) {
-  console.log("⚠️  config.json nicht vorhanden (wird für KI-Modus benötigt)");
-} else {
-  const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
-  assert("config hat active_platforms", Array.isArray(config.active_platforms));
-  assert("config hat ai-Config", config.ai && config.ai.provider);
-  assert("config hat platforms", config.platforms && Object.keys(config.platforms).length > 0);
-}
-
-// ============================================================
 // Prompt-Dateien-Prüfung
 // ============================================================
 
@@ -141,16 +109,25 @@ const promptsDir = path.resolve(__dirname, "..", "prompts");
 assert("prompts/_shared/kunstfigur-kern.md", fs.existsSync(path.join(promptsDir, "_shared", "kunstfigur-kern.md")));
 assert("prompts/telegram.md", fs.existsSync(path.join(promptsDir, "telegram.md")));
 assert("prompts/youtube-community.md", fs.existsSync(path.join(promptsDir, "youtube-community.md")));
+assert("prompts/linkedin.md", fs.existsSync(path.join(promptsDir, "linkedin.md")));
 
 // ============================================================
-// Template-Dateien-Prüfung
+// Konfigurations-Prüfung
 // ============================================================
 
-console.log("\n📋 Fallback-Templates");
+console.log("\n📋 Konfiguration");
 
-const tmplDir = path.resolve(__dirname, "..", "templates");
-assert("templates/telegram.txt", fs.existsSync(path.join(tmplDir, "telegram.txt")));
-assert("templates/youtube-community.txt", fs.existsSync(path.join(tmplDir, "youtube-community.txt")));
+const configPath = path.resolve(__dirname, "..", "config.json");
+const configExamplePath = path.resolve(__dirname, "..", "config.json.example");
+
+assert("config.json.example existiert", fs.existsSync(configExamplePath));
+assert("config.json existiert", fs.existsSync(configPath));
+
+if (fs.existsSync(configPath)) {
+  const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  assert("config hat active_platforms", Array.isArray(config.active_platforms));
+  assert("config hat platforms", config.platforms && Object.keys(config.platforms).length > 0);
+}
 
 // ============================================================
 // Ergebnis

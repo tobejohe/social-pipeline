@@ -1,12 +1,5 @@
 {
-  "active_platforms": ["telegram", "youtube-community"],
-  "ai": {
-    "provider": "deepseek",
-    "model": "deepseek-chat",
-    "api_key_env": "DEEPSEEK_API_KEY",
-    "temperature": 0.8,
-    "max_tokens": 2000
-  },
+  "active_platforms": ["telegram", "youtube-community", "linkedin"],
   "platforms": {
     "telegram": {
       "max_chars": 500,

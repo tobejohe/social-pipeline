@@ -1,21 +1,28 @@
 # YouTube Community-Post
 
 **Plattform:** YouTube Community-Tab (Text-Post an Kanal-Abonnenten)
-**Zeichenlimit:** {{max_chars}} Zeichen
+**Zeichenlimit:** {{max_chars}} Zeichen — HART. Der Post MUSS ≤ {{max_chars}} Zeichen sein.
 **Tonalität:** {{tone}}
-**Content-Typ:** Community-Interaktion. Der Post erscheint im Subscriptions-Feed der Abonnenten und kann Polls, Bilder oder reinen Text enthalten.
+**Content-Typ:** Community-Interaktion. Erscheint im Subscriptions-Feed. Kann Polls enthalten.
 
-**Aufgabe:**
-Transformiere den folgenden Content in einen YouTube-Community-Post.
-Der Post soll:
-1. Mit einem direkten Einstieg beginnen, der die Abonnenten adressiert (kein "Hallo zusammen", aber ein Community-Gefühl)
-2. Im typischen Tobias-Hecht-Tonfall sein (siehe Kunstfigur-Kern)
-3. Maximal {{max_chars}} Zeichen lang sein
-4. Mit einer echten Frage enden, die zum Kommentieren einlädt (YouTube-Community lebt von Kommentaren)
-5. Optional: Eine Poll-Idee vorschlagen, falls der Content sich dafür eignet (3-5 Optionen)
-6. Den Kanal-Ton treffen: hintergründig, nicht reißerisch
+**TRANSFORMATIONSAUFGABE:**
+Der folgende Content ist ein langer Text. Schreibe ihn um in einen Community-Post, der:
+1. Mit einem direkten Einstieg beginnt — kein "Hallo", aber ein erkennbares Community-Gefühl
+2. Im Tobias-Hecht-Tonfall ist (Kunstfigur-Kern). Substanz, kein Clickbait.
+3. Maximal {{max_chars}} Zeichen. Zähle nach. Bei Überschreitung kürze gnadenlos.
+4. Mit einer ECHTEN Frage endet, die zum Kommentieren einlädt — keine rhetorische Frage, sondern eine, auf die Leute tatsächlich antworten wollen
+5. Optional: Einen POLL vorschlagen (3–5 Optionen), wenn der Content sich dafür eignet. Im Format:
+   📊 POLL: [Frage]
+   - Option 1
+   - Option 2
+   - Option 3
 
-**Wichtig:** Der YouTube-Community-Tab ist kein TikTok. Die Leute sind hier, weil sie den Kanal abonniert haben. Sie erwarten Substanz, keinen Clickbait.
+**WICHTIG:**
+- Der Output ist EIN Post, kein Entwurf, keine Erklärung
+- Keine Hashtags (YouTube Community ignoriert sie)
+- Keine Markdown-Überschriften (#), kein Fettdruck (**)
+- Reiner Text, den Tobias sofort per Copy & Paste posten kann
+- Die Frage am Ende muss aus dem Thema des Texts kommen — nicht ausgedacht
 
 **Content:**
 Titel: {{title}}
