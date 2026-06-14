@@ -1,213 +1,114 @@
-# Social-Pipeline — Content-Maschine für plattformspezifische Ausspielungen
+# Social-Pipeline — CLINE-gesteuerte Content-Transformation
 
-Lokales Werkzeug zur Vorbereitung von Social-Media-Beiträgen. Aus einem Gedanken, einem Bild, einem Blog-Post oder einer Podcast-Episode werden plattformgerechte Text-Bild-Kombinationen für Telegram, Instagram, YouTube, LinkedIn, TikTok, Mastodon und andere Kanäle generiert. Ziel: Copy & Paste in die jeweiligen Plattformen — kein automatisches Posting, keine API-Abhängigkeit.
-
----
-
-## Inhaltsverzeichnis
-
-- [Das Problem](#das-problem)
-- [Architektur-Entscheidung](#architektur-entscheidung)
-- [Schwesterprojekte](#schwesterprojekte)
-- [Technischer Ansatz](#technischer-ansatz)
-- [Plattform-Matrix](#plattform-matrix)
-- [Ordnerstruktur (geplant)](#ordnerstruktur-geplant)
-- [Workflow](#workflow)
-- [KI-Integration](#ki-integration)
-- [Abgrenzung: Was dieses Projekt NICHT ist](#abgrenzung-was-dieses-projekt-nicht-ist)
+Aus einem Gedanken, einem Blog-Post oder einer Beobachtung werden plattformgerechte Social-Media-Beiträge. Die Pipeline lebt im CLINE-Chat — du gibst Text ein, CLINE transformiert ihn mit den Prompt-Vorlagen und schreibt Copy-Paste-fertige Dateien.
 
 ---
 
-## Das Problem
-
-Tobias Hecht produziert Content in verschiedenen Formen:
-
-- **Strukturiert & langlebig:** Blog-Posts, Podcast-Episoden (→ Website tobiashecht.de)
-- **Spontan & kurzlebig:** Plumpsklo-Fotos, Dönerbuden-Rants, tagespolitische Reaktionen (→ Social Media only)
-- **Taktisch & promotend:** Teaser für neue Episoden, Veranstaltungsankündigungen, Buchhinweise
-
-Jeder dieser Inhalte muss auf 5–7 Plattformen in jeweils anderer Form erscheinen:
-- Telegram (Text, ggf. mit Bild)
-- Instagram (Bild + Caption + Hashtags)
-- YouTube Community / Video-Tab (Text, Thumbnail)
-- LinkedIn (professionellerer Ton, Thought Leadership)
-- TikTok (kurzes Video-Skript, Text-Overlay)
-- Mastodon / Fediverse (Text mit Content-Warnings)
-- Newsletter (als Teil einer kuratierten Ausgabe)
-
-**Die manuelle Lösung** (jedes Dashboard einzeln öffnen und befüllen) kostet Stunden und kognitive Energie, die für kreative Arbeit fehlt.
-
-**Die SaaS-Lösung** (Buffer, Hootsuite, Later) kostet 100 €/Monat, löst aber nur das Scheduling — nicht die Transformation eines Gedankens in sechs plattformgerechte Textfassungen.
-
-**Die Lösung der Social-Pipeline:** Ein Gedanke wird einmal in Markdown formuliert. Ein lokales Script generiert daraus die plattformspezifischen Textdateien. Der Mensch macht Copy & Paste in die Plattformen. Kein API-Key zu den Plattformen nötig. Volle Kontrolle über den Content.
-
----
-
-## Architektur-Entscheidung
-
-### Warum ein eigenständiges Projekt — nicht Teil der Website?
-
-Die Website (`website-tobiashecht-de`) hostet **langlebige Inhalte**: Blog-Posts, Podcast-Episoden, statische Seiten. Diese sind versioniert in Git, gebaut von `sync-to-cloudflare.js`, deployed auf Cloudflare Pages. Ihr Lebenszyklus ist Jahre.
-
-Social-Media-Content ist **kurzlebig**. Ein Dönerbuden-Foto existiert 48 Stunden. Es braucht keinen KV-Speicher, kein HTML-Template, kein `git push`. Diese Inhalte in das Website-Projekt zu mischen würde:
-
-1. Die Codebasis überfrachten (zwei komplett verschiedene Content-Pipelines im selben Repo)
-2. Die Deployment-Infrastruktur unnötig belasten (jeder Social-Post triggert einen Cloudflare-Build)
-3. Die mentale Trennung zwischen "ewigem" und "flüchtigem" Content verwischen
-
-**Die Social-Pipeline ist ein eigenständiges Werkzeug** — wie das Newsletter-System oder die Snippet-Verwaltung.
-
-### Verbindung zur Website — über RSS als neutrale Schnittstelle
-
-Wenn ein Blog-Post oder eine Podcast-Episode auf der Website erscheint, will man auch Social-Media-Teaser dafür. Die Pipeline kann die RSS-Feeds der Website einlesen (`tobiashecht.de/rss-blog.xml`, `tobiashecht.de/podcast-<slug>.xml`) und bei neuen Einträgen automatisch Teaser generieren. Kein Eingriff in die Website nötig — RSS ist die Brücke.
-
----
-
-## Schwesterprojekte
-
-Die Social-Pipeline ist ein Baustein in einer Werkzeug-Familie:
-
-| Projekt | Pfad | Zweck |
-|---------|------|-------|
-| **Website** | `~/Desktop/website-tobiashecht-de` | Langlebiger Content: Blog, Podcast, Booking, Shop, Rechtliches |
-| **Newsletter-System** | `~/newsletter-system/` | mailto:-basierte Anmeldung, lokale Listenverwaltung |
-| **Werkstatthandbuch** | `~/Desktop/Recherchesammlung/werkstatthandbuch_kabarett_und_buehne` | Methoden, Strategien, Prompt-Templates, Bühnen-Handwerk |
-| **Snippet-Verwaltung** | `~/Desktop/snippets/` | Kabarett-Snippets, Material-Datenbank |
-| **Social-Pipeline** | `~/Desktop/social-pipeline/` | **Dieses Projekt** — Plattform-Transformation für Social Media |
-
-**Datenfluss zwischen den Projekten:**
-
-```
-Gehirn/Idee
-  │
-  ├──► Website (Blog-Post, Podcast-Episode)
-  │       │
-  │       ▼
-  │     RSS-Feeds ────► Social-Pipeline (liest RSS, generiert Teaser)
-  │
-  ├──► Social-Pipeline (spontaner Social-Post)
-  │
-  ├──► Newsletter-System (kuratierte Ausgabe)
-  │
-  └──► Snippet-Verwaltung (Material-Archiv)
-```
-
----
-
-## Technischer Ansatz
-
-**Prinzip:** MD → Script → Output-Dateien. Strukturgleich zum `sync-to-cloudflare.js` des Website-Projekts, aber mit anderem Ziel:
-
-| Website-Projekt | Social-Pipeline |
-|----------------|-----------------|
-| Scannt `posts/`, `pages/`, `podcasts/` | Scannt `posts/`, liest zusätzlich externe RSS-Feeds |
-| Rendert HTML via `marked` | Rendert Plattform-Texte via String-Templates |
-| Schreibt in Cloudflare KV | Schreibt in lokalen `output/`-Ordner |
-| Generiert RSS | Konsumiert RSS |
-| Deployed auf Cloudflare | Läuft nur lokal — kein Deploy |
-
-**Warum kein Open-Source-Fremdprojekt?**
-
-Existierende Lösungen (Buffer-Alternativen, Static-Site-Plugins, KI-Text-Tools) sind entweder:
-- Auf automatisches API-Posting ausgelegt (was dieses Projekt bewusst vermeidet)
-- An bestimmte CMS-Ökosysteme gekoppelt (WordPress, Ghost, 11ty)
-- Kommerziell mit wiederkehrenden Kosten
-
-Eine selbst gebaute Pipeline ist ~150 Zeilen Node.js, hat keine Abhängigkeiten außer `marked`, und tut exakt das Nötige. Das Rad ist klein genug, dass es sich lohnt, es selbst zu bauen.
-
----
-
-## Plattform-Matrix
-
-Welcher Content-Typ wird auf welcher Plattform ausgespielt?
-
-| Content-Typ | Telegram | Instagram | YouTube | LinkedIn | TikTok | Mastodon |
-|-------------|:--------:|:---------:|:-------:|:--------:|:------:|:--------:|
-| Blog-Post-Teaser | ✅ Text | ✅ Bild+Text | ✅ Community | ✅ Post | ❌ | ✅ Text |
-| Podcast-Episode-Teaser | ✅ Text+Link | ✅ Bild+Text | ✅ Community | ✅ Post | ✅ Skript | ✅ Text |
-| Kurzer Rant | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Foto (Plumpsklo, Döner) | ✅ Bild | ✅ Bild | ❌ | ❌ | ❌ | ✅ Bild |
-| Veranstaltungshinweis | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| Buch-/Merch-Hinweis | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-
----
-
-## Ordnerstruktur (geplant)
+## Projektstruktur
 
 ```
 social-pipeline/
 ├── README.md                  # Diese Datei
-├── package.json               # Node.js-Abhängigkeiten (marked, ggf. KI-Client)
-├── generate.js                # Haupt-Script: MD + Templates → Output
-├── config.json                # Plattform-Einstellungen, aktive RSS-Feeds
-├── posts/                     # Spontane Social-MDs
-│   └── 2026-06-14-doenerbude.md
-├── templates/                 # Plattform-Templates
-│   ├── telegram.txt
-│   ├── instagram.txt
-│   ├── youtube-community.txt
-│   ├── linkedin.txt
-│   ├── tiktok.txt
-│   ├── mastodon.txt
-│   └── newsletter.txt
-├── output/                    # Fertige Copy-Paste-Texte (pro Tag)
-│   └── 2026-06-14/
-│       ├── telegram-doenerbude.txt
-│       ├── instagram-doenerbude.txt
-│       ├── linkedin-doenerbude.txt
-│       └── ...
-└── media/                     # Bilder für Social-Posts (optional)
+├── .gitignore                 # output/ ausgeschlossen
+├── config.json                # Plattform-Einstellungen
+├── posts/                     # Content-Quellen (Markdown)
+│   └── 2026-06-14-test-erster-social-post.md
+├── prompts/                   # Prompt-Vorlagen (das geistige Eigentum)
+│   ├── _shared/
+│   │   └── kunstfigur-kern.md     # System-Prompt: Tobias-Hecht-Identität
+│   ├── telegram.md            # 500 Zeichen, direkt, Push-tauglich
+│   ├── youtube-community.md   # 1.500 Zeichen, Polls, Community-Fragen
+│   └── linkedin.md            # 3.000 Zeichen, Thought Leadership
+└── output/                    # Generierte Texte (pro Tag)
+    └── YYYY-MM-DD/
+        ├── telegram-slug.txt
+        ├── youtube-community-slug.txt
+        └── linkedin-slug.txt
 ```
 
 ---
 
 ## Workflow
 
-### Spontaner Social-Post
+### 1. Content bereitstellen
 
-1. In `posts/` eine neue Datei anlegen: `YYYY-MM-DD-slug.md`
-2. Frontmatter ausfüllen: `title`, `date`, `category`, `platforms`, Bildpfad
-3. Body: Der Kern-Gedanke, eine Pointe, ein Bildbeschreibungstext
-4. `node generate.js` ausführen
-5. Im `output/YYYY-MM-DD/` liegen die fertigen Texte für jede Plattform
-6. Copy & Paste in die jeweiligen Plattform-Dashboards
+Entweder:
+- Eine `.md`-Datei in `posts/` ablegen
+- Text direkt im CLINE-Chat eingeben
+- Auf eine URL oder Datei verweisen
 
-### Blog-Post promoten
+### 2. Im CLINE-Chat transformieren
 
-1. In `generate.js` die Website-URL des Blog-Posts angeben (oder das Script liest den RSS-Feed automatisch)
-2. Die Pipeline extrahiert Titel, Exzerpt, Bild aus dem RSS
-3. Plattform-Texte werden generiert
-4. Optional: Manuelle Nachbearbeitung möglich (die Textdateien sind editierbar)
+```
+"Transformiere posts/2026-06-14-mein-post.md für Telegram und YouTube-Community"
+```
 
-### Podcast-Episode promoten
+CLINE lädt automatisch:
+- Den Content aus `posts/`
+- Den `kunstfigur-kern.md` als System-Prompt
+- Die plattformspezifischen Prompts aus `prompts/`
+- Die `config.json` für Limits und Tonalität
 
-1. Die Pipeline liest den Podcast-RSS (`/podcast-<slug>.xml`)
-2. Bei neuen Episoden werden Teaser generiert (inkl. Audio-Link, Shownotes-Verweis, Dauer)
-3. Zusätzlich: Ein kurzes Video-Skript für TikTok/Reels, das die Episode bewirbt
+### 3. Ergebnis
 
----
-
-## KI-Integration
-
-Die Pipeline unterstützt optionale KI-gestützte Texttransformation:
-- **API:** Deepseek (oder OpenAI/Claude-kompatibel)
-- **Nutzung:** Aus einem Rohgedanken im Body generiert die KI plattformspezifische Varianten unter Beachtung von:
-  - Zeichenlimits (z.B. 500 für Telegram, 2200 für Instagram, 3000 für LinkedIn)
-  - Tonalität (Telegram: direkt, Instagram: visuell-beschreibend, LinkedIn: professionell-analytisch)
-  - Hashtag-Vorschlägen
-  - Rhetorischen Figuren aus dem Werkstatthandbuch (Scheinbare Naivität, absurde Logik, Soziolekt-Kontrast)
-
-**Die KI ist optional.** Die Pipeline funktioniert auch rein regelbasiert mit Templates — dann schreibt der Mensch den Kern-Text selbst und die Templates formatieren ihn nur um.
+CLINE schreibt die transformierten Texte nach `output/YYYY-MM-DD/`. Du kopierst sie in die jeweilige Plattform.
 
 ---
 
-## Abgrenzung: Was dieses Projekt NICHT ist
+## Plattform-Matrix
 
-- **Kein Social-Media-Scheduler.** Es postet nicht automatisch. Es bereitet Texte vor. Der Mensch entscheidet, wann und ob sie live gehen.
-- **Kein Analytics-Tool.** Keine Follower-Zahlen, keine Engagement-Metriken. Das ist bewusst ausgeklammert (DSGVO, Minimalismus, Fokus auf Content-Produktion).
-- **Kein API-Client für Plattformen.** Kein Instagram-Token, kein YouTube-API-Key. Keine Abhängigkeit von Plattform-Schnittstellen, die sich ändern oder entzogen werden können.
-- **Kein Website-Teil.** Die Social-Pipeline lebt getrennt von tobiashecht.de. Sie hat ihren eigenen Git-Repo, ihr eigenes Node.js-Projekt, ihren eigenen Lebenszyklus.
+| Plattform | Zeichenlimit | Tonalität | Prompt-Datei |
+|-----------|-------------|-----------|-------------|
+| Telegram | 500 | direkt, plaudernd, Push-fähig | `prompts/telegram.md` |
+| YouTube Community | 1.500 | Community-nah, frage-getrieben | `prompts/youtube-community.md` |
+| LinkedIn | 3.000 | Thought Leadership mit Humor | `prompts/linkedin.md` |
 
 ---
 
-*Dieses Projekt startet als README. Die Implementierung folgt in einem nächsten Schritt — basierend auf dem bewährten Muster des Website-Sync-Scripts.*
+## Kunstfigur-Kern
+
+Der System-Prompt in `prompts/_shared/kunstfigur-kern.md` definiert die Tobias-Hecht-Identität:
+
+- **Zwei Haltungen:** Der wütende Aufklärer + der amüsierte Anthropologe
+- **5 rhetorische Grundfiguren:** Scheinbare Naivität, Absurde Logik, Soziolekt-Kontrast, Pointe als sprachliche Figur, Radikaler Perspektivwechsel
+- **3 Archetypen:** Bauer Huber, Opa/Dorfältester, Tante Erna
+- **Stil:** Trocken, direkt, keine Moral, kein Lob
+
+---
+
+## Plattform-Prompts anpassen
+
+Die `.md`-Dateien in `prompts/` sind das Herzstück. Sie enthalten die Transformationsanweisungen für jede Plattform. Sie nutzen `{{platzhalter}}` für dynamische Werte:
+
+- `{{title}}` — Titel aus dem Content
+- `{{body}}` — Body-Text
+- `{{hook}}` — Hook-Zeile
+- `{{max_chars}}` — Zeichenlimit aus `config.json`
+- `{{tone}}` — Tonalität aus `config.json`
+
+Prompts können jederzeit verfeinert werden — sie sind versioniert in Git und überleben Plattform-Änderungen.
+
+---
+
+## config.json
+
+```json
+{
+  "active_platforms": ["telegram", "youtube-community", "linkedin"],
+  "platforms": {
+    "telegram": { "max_chars": 500, "tone": "direkt, plaudernd, Push-fähig", "hashtags": false },
+    "youtube-community": { "max_chars": 1500, "tone": "Community-nah, frage-getrieben", "hashtags": false },
+    "linkedin": { "max_chars": 3000, "tone": "Thought Leadership mit Humor", "hashtags": true }
+  }
+}
+```
+
+---
+
+## Abgrenzung
+
+- **Kein automatisches Posting.** Kein API-Key zu den Plattformen.
+- **Kein Scheduler.** Du entscheidest, wann was live geht.
+- **Kein Analytics-Tool.** Fokus auf Content-Produktion.
+- **Keine eigene LLM-API.** CLINE ist die Engine — kein zweiter API-Key nötig.
+- **Kein JavaScript-Framework.** Das Projekt besteht aus Prompt-Dateien und Content. Punkt.

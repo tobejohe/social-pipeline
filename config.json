@@ -10,6 +10,11 @@
       "max_chars": 1500,
       "tone": "Community-nah, frage-getrieben, dialogisch",
       "hashtags": false
+    },
+    "linkedin": {
+      "max_chars": 3000,
+      "tone": "professionell-analytisch, Thought Leadership mit Humor",
+      "hashtags": true
     }
   }
 }
