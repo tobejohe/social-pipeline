@@ -40,7 +40,7 @@
 Nimm den folgenden Content und forme ihn in einen LinkedIn-Post um:
 1. Wähle einen der 5 Content-Typen, der am besten zum Content passt
 2. Finde einen unerwarteten Einstieg — eine Szene, eine Zahl, eine Beobachtung. Kein "Interessant…", kein "Spannend…"
-3. Baue den Soziolekt-Kontrast ein (Dorfpragmatismus trifft Business-Jargon)
+3. Baue den Soziolekt-Kontrast ein (Dorfpragmatismus trifft Business-Jargon). Siehe `kunstfigur-kern.md` (Syntaktische Constraints, Lexikalische Verbote, Anti-Patterns, Rhetorische Figuren) und `stil-beispiele.md` (3 Few-Shot-Examples mit Stil-Analyse). Dein Text muss sich anfühlen wie die Beispiele — nicht wie eine Beschreibung der Beispiele.
 4. Gib dem Post analytische Tiefe — der Humor ist das Vehikel, die Einsicht die Fracht
 5. Halte das 3.000-Zeichen-Limit
 

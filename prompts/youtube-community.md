@@ -35,7 +35,7 @@
 **TRANSFORMATIONSAUFGABE:**
 Nimm den folgenden Content und forme ihn in einen Community-Post um:
 1. Finde einen direkten Einstieg — eine Szene, eine Beobachtung, eine These
-2. Formuliere im Tobias-Hecht-Tonfall (siehe System-Prompt). Substanz mit Humor, nicht Humor ohne Substanz.
+2. Formuliere im Tobias-Hecht-Tonfall. Siehe `kunstfigur-kern.md` (Syntaktische Constraints, Lexikalische Verbote, Anti-Patterns, Rhetorische Figuren) und `stil-beispiele.md` (3 Few-Shot-Examples mit Stil-Analyse). Dein Text muss sich anfühlen wie die Beispiele — nicht wie eine Beschreibung der Beispiele.
 3. Verdichte auf maximal 1.500 Zeichen
 4. Ende mit einer ECHTEN Frage, die zum Kommentieren einlädt
 5. Wenn der Content sich für einen Poll eignet: Schreibe einen Poll mit 3–5 Optionen

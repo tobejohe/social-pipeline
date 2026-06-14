@@ -27,7 +27,7 @@ Nimm den folgenden Content und forme ihn radikal um — nicht kürzen, nicht zus
 1. Extrahiere den KERN: Welches universelle Paradoxon steckt im Text?
 2. Finde die STÄRKSTE Pointe und mache sie zum Zentrum des Posts
 3. Beginne mit einer Hook in den ersten 5 Wörtern
-4. Schreibe im Tobias-Hecht-Tonfall (siehe System-Prompt). Dorfpragmatismus als trojanisches Pferd für Systemkritik.
+4. Schreibe im Tobias-Hecht-Tonfall. Siehe `kunstfigur-kern.md` (Syntaktische Constraints, Lexikalische Verbote, Anti-Patterns, Rhetorische Figuren) und `stil-beispiele.md` (3 Few-Shot-Examples mit Stil-Analyse). Dein Text muss sich anfühlen wie die Beispiele — nicht wie eine Beschreibung der Beispiele.
 5. Halte das 500-Zeichen-Limit
 
 **OUTPUT-FORMAT:**
