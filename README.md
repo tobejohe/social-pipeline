@@ -28,30 +28,57 @@ social-pipeline/
 
 ---
 
-## Workflow
+## Workflow (zweistufig — empfohlen)
 
-### 1. Content bereitstellen
+Nicht jeder Content gehört auf jede Plattform. Der zweistufige Workflow stellt sicher, dass jeder Post da landet, wo er hinpasst — mit voller Prompt-Fokussierung.
 
-Entweder:
-- Eine `.md`-Datei in `posts/` ablegen
-- Text direkt im CLINE-Chat eingeben
-- Auf eine URL oder Datei verweisen
-
-### 2. Im CLINE-Chat transformieren
+### Stufe 1: Plattform-Analyse
 
 ```
-"Transformiere posts/2026-06-14-mein-post.md für Telegram und YouTube-Community"
+"Analysiere posts/2026-06-14-mein-post.md: Für welche Plattformen eignet er sich?"
 ```
 
-CLINE lädt automatisch:
-- Den Content aus `posts/`
-- Den `kunstfigur-kern.md` als System-Prompt
-- Die plattformspezifischen Prompts aus `prompts/`
-- Die `config.json` für Limits und Tonalität
+CLINE lädt `prompts/_shared/analyse-plattformen.md` + Content und gibt eine Tabelle aus:
 
-### 3. Ergebnis
+| Plattform | Geeignet? | Begründung |
+|-----------|:---------:|-----------|
+| Telegram | ✅ | Kurzer Rant perfekt für Push-Kanal |
+| LinkedIn | ✅ | Ablasshandel-Analogie = Thought Leadership |
+| YouTube | ✅ | Poll-Idee vorhanden |
+| Instagram | ⚠️ | Braucht starkes Bild |
+| TikTok | ❌ | Setup zu lang für 45 Sek. |
+
+**Vorteil:** Du triffst eine bewusste Entscheidung, statt alles überall hinzuklatschen.
+
+### Stufe 2: Plattform-spezifische Transformation
+
+Für jede empfohlene Plattform einzeln:
+
+```
+"Erzeuge den Telegram-Post für den Content"
+"Erzeuge den LinkedIn-Post"
+"Erzeuge den YouTube-Community-Post"
+```
+
+Jeder Prompt läuft isoliert. Das LLM konzentriert sich auf **eine** Plattform, **ein** Zeichenlimit, **eine** Tonalität — volle Prompt-Fokussierung.
+
+Der Content ist bereits aus Stufe 1 im Kontext und muss nicht neu geladen werden.
+
+### Stufe 3: Ergebnis
 
 CLINE schreibt die transformierten Texte nach `output/YYYY-MM-DD/`. Du kopierst sie in die jeweilige Plattform.
+
+---
+
+### Schnellvariante: All-in-One
+
+Wenn du den Content bereits kennst und weißt, welche Plattformen passen:
+
+```
+"Erzeuge Telegram, LinkedIn und YouTube-Community für posts/mein-post.md"
+```
+
+⚠️ **Achtung:** Bei dieser Variante konkurrieren mehrere Prompts um Aufmerksamkeit — die Qualität pro Plattform kann sinken, besonders bei den ersten Plattformen im Prompt. Nur nutzen, wenn du bewusst auf Präzision zugunsten von Geschwindigkeit verzichtest.
 
 ---
 
