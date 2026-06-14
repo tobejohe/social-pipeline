@@ -39,6 +39,7 @@ Nimm den folgenden Content und forme ihn in einen Community-Post um:
 3. Verdichte auf maximal 1.500 Zeichen
 4. Ende mit einer ECHTEN Frage, die zum Kommentieren einlädt
 5. Wenn der Content sich für einen Poll eignet: Schreibe einen Poll mit 3–5 Optionen
+6. Optional: Nach der Frage/dem Poll ein PS. "PS: Wer das länger lesen will als 1.500 Zeichen: tobiashecht.de" — aber nur in jedem zweiten Community-Post. Variiere die Formulierung. Kein Standard-Banner.
 
 **OUTPUT-FORMAT:**
 - Reiner Text, kein Entwurf, keine Erklärung

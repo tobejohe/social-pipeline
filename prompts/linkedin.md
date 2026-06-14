@@ -34,7 +34,8 @@
 - Keine Markdown-Formatierung (** funktioniert nicht auf LinkedIn)
 - Kein "Happy to share", kein "Excited to announce", kein "Thoughts?"
 - Maximal 3 Hashtags, nur wenn thematisch exakt passend
-- Kein Call-to-Action, kein Link (der Wert wird gezeigt, nicht behauptet)
+- Kein direkter Call-to-Action, kein "Bucht mich", kein "Abonniere"
+- Der letzte Satz KANN auf die Website verweisen — nicht als CTA, sondern als logischer Ort für mehr Kontext. "Mehr dazu auf tobiashecht.de" oder "Die Speaker-Seite findet sich auf tobiashecht.de". Nie als Link formatieren. Nie als Banner. Ein Satz, der aus dem Text kommt.
 
 **TRANSFORMATIONSAUFGABE:**
 Nimm den folgenden Content und forme ihn in einen LinkedIn-Post um:

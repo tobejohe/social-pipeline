@@ -64,7 +64,14 @@ description: [Meta-Description, 150–160 Zeichen, mit Keywords. Kein SEO-Müll.
 
 **Pflicht: Bild-Idee.** Nenne einen hero_image-Vorschlag im Frontmatter. Beschreibe, was auf dem Bild zu sehen sein sollte (keine Generierung, nur Idee).
 
-**Optional: Interner Verweis.** Am Ende KANN ein Satz stehen, der auf Shows/Booking verweist — im Hecht-Ton, nicht als Werbeblock. "Übrigens: Ich steh demnächst in [Stadt]. Falls du sehen willst, ob die Pointen da auch flachfallen."
+**Pflicht: Trichter-Verweis.** Jeder Blog-Post endet mit EINEM Satz, der auf den Newsletter oder die Website verweist — im Hecht-Ton, nicht als Werbeblock. Kein Banner. Kein "Abonniere jetzt!". Sondern ein logischer letzter Gedanke, der aus dem Text kommt. Variiere die Formulierung von Post zu Post:
+
+Beispiele:
+- "Und wenn du das jetzt zu Ende gedacht hast: tobiashecht.de — da steht mehr davon."
+- "Mein Newsletter ist wie dieser Blog, nur mit weniger Rücksicht auf SEO."
+- "Wer solche Gedanken öfter ertragen will: tobiashecht.de"
+
+Die Domain MUSS genannt werden (tobiashecht.de). Der Ton MUSS Hecht sein — kein Standard-CTA.
 
 ---
 
